@@ -15,8 +15,9 @@ USAGE:
     Specifity.calculate("a > span .foobar");
 
 returns and object with a values, matches and string attribute
+
     {
-    	values: {
+        values: {
     		a: 0,
     		b: 0,
     		c: 1,
