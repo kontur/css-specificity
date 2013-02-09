@@ -2,91 +2,83 @@
  * Module for calculating css specifity
  * 
  * @author Johannes "kontur" Neumeier
- * @version 0.0.1 
+ * @version 0.0.1
  * 
  */
 var Specifity = (function () {
 
-	var public  		= {},
-		private 		= {};
 
-	private.regex 		= {};
-	private.regex.classes 		= /\./gi;
-	private.regex.pseudoClasses = /\:/gi;
-	private.regex.ids 			= /\#/gi;
-	private.regex.tags 			= /(?:^|\>|\+)(\w+[^\>\+]?)+/gi;
-	private.regex.angleBrackets = /\[/gi;
+	var public    = {},
+		private   = {};
+
+
+	private.regex = {
+
+		// ids
+		b: /#[a-z]+/gi,
+
+		// classes and attributes
+		c: /\.[a-z]+|\[[^\]]*\]/gi,
+
+		// tags and pseudo classes
+		d: /(?:^| |>|\+|~)+([a-z_-]+)|(?:\:([a-z]+))/gi
+
+	};
 
 
 	public.calculate = function (selector) {
 
-		console.log('calculate(' + selector + ')');
+		//console.log('calculate(' + selector + ')');
 
-		var specifity = {},
-			result = {};
+		var values = {a: 0,  b: 0,  c: 0,  d: 0},
+			matches   = {a: [], b: [], c: [], d: []},
+			result    = {},
+			bHits, cHits, dHits;
 
 		if (selector == "") {
 			return false;
 		}
 
-		specifity.a = specifity.b = specifity.c = specifity.d = 0;
-
-		var parts = selector.split(/\s/gi);
-
-		for (var i = 0; i < parts.length; i++) {
-			var partial = private.calculatePartial(parts[i]);
-			for (number in partial) {
-				if (specifity.hasOwnProperty(number)) {
-					specifity[number] += partial[number];
-				}
+		while (bHits = private.regex.b.exec(selector)) {
+			//console.log(bHits);
+			if (bHits[0]) {
+				matches.b.push(bHits[0]);
+				values.b += 1;
 			}
 		}
 
-		result.obj = specifity;
-		result.string = specifity.a + "," + specifity.b + "," + specifity.c + "," + specifity.d;
+		while (cHits = private.regex.c.exec(selector)) {
+			//console.log(cHits);
+			if (cHits[0]) {
+				matches.c.push(cHits[0]);
+				values.c += 1;
+			}
+		}
+
+		// loop over the regex hits of a global regex in a while
+		// this allows to find not just matches, but captures, so
+		// as to respect the regex's ?: match but not capture groups
+		while (dHits = private.regex.d.exec(selector)) {
+			//console.log(dHits);
+			if (dHits[1]) {
+		    	matches.d.push(dHits[1]);
+		    } else {
+		    	matches.d.push(dHits[0]);
+		    }
+		    values.d += 1;
+		}
+
+		result.values  = values;
+		result.string  = values.a + "," + values.b + "," + values.c + "," + values.d;
+		result.matches = matches;
 
 		return result;
-
-	}
-
-
-	private.calculatePartial = function (selector) {
-
-		var specifity = {};
-		specifity.a = specifity.b = specifity.c = specifity.d = 0;
-
-		var dots = selector.match(private.regex.classes);
-		if (dots) {
-			specifity.c += dots.length;
-		}
-
-		var colons = selector.match(private.regex.pseudoClasses);
-		if (colons) {
-			specifity.d += 1;
-		}
-
-		var hashes = selector.match(private.regex.ids);
-		if (hashes) {
-			specifity.b += hashes.length;
-		}
-
-		// test cases http://rubular.com/r/oKasaeHbiB
-		var elements = selector.match(private.regex.tags);
-		if (elements) {
-			specifity.d += elements.length;
-		}
-
-		var angleBrackets = selector.match(private.regex.angleBrackets);
-		if (angleBrackets) {
-			specifity.c += angleBrackets.length;
-		}
-
-		return specifity;
 
 	}
 	
 
     // return public interface
 	return public;
+	
 
 })();
