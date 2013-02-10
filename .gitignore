@@ -1,1 +1,3 @@
-.project
+*.project
+*.sublime-project
+*.sublime-workspace

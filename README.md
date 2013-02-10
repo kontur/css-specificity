@@ -1,7 +1,7 @@
-CSS-SPECIFITY MODULE
+CSS-SPECIFICITY MODULE
 ====================
 
-wip - javascript module to calculate css specifity
+wip - javascript module to calculate css specificity
 
 
 TODO's:
@@ -12,7 +12,7 @@ TODO's:
 
 USAGE:
 ======
-    Specifity.calculate("a > span .foobar");
+    Specificity.calculate("a > span .foobar");
 
 returns an object with a values, matches and string attribute
 
