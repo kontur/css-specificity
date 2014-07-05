@@ -1,0 +1,21 @@
+{
+    "name": "specificity",
+    "description": "Javascript module for calculating css specificity",
+    "version": "0.1.0",
+    "author": {
+        "name": "Johannes Neumeier", 
+        "email": "hello@johannesneumeier.com"
+    },
+    "homepage": "https://github.com/kontur/css-specificity",
+        "engines": {
+        "node": ">= 0.10.0"
+    }, 
+    "devDependencies": {
+        "grunt": "~0.4.2",
+        "grunt-contrib-jshint": "~0.7.2",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-uglify": "~0.2.7"
+    },
+    "license": "Licensed under the Apache License, Version 2.0 - http://www.apache.org/licenses/LICENSE-2.0"
+ }
